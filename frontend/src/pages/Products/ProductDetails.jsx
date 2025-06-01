@@ -64,86 +64,96 @@ const ProductDetails = () => {
   };
 
   return (
-    <>
-      <div>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="container mx-auto px-4">
         <Link
           to="/"
-          className="text-white font-semibold hover:underline ml-[10rem]"
+          className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 transition-colors duration-200"
         >
-          Go Back
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Home
         </Link>
-      </div>
 
-      {isLoading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant="danger">
-          {error?.data?.message || error.message}
-        </Message>
-      ) : (
-        <>
-          <div className="flex flex-wrap relative items-between mt-[2rem] ml-[10rem]">
-            <div>
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full xl:w-[50rem] lg:w-[45rem] md:w-[30rem] sm:w-[20rem] mr-[2rem]"
-              />
-
-              <HeartIcon product={product} />
-            </div>
-
-            <div className="flex flex-col justify-between">
-              <h2 className="text-2xl font-semibold">{product.name}</h2>
-              <p className="my-4 xl:w-[35rem] lg:w-[35rem] md:w-[30rem] text-[#B0B0B0]">
-                {product.description}
-              </p>
-
-              <p className="text-5xl my-4 font-extrabold">$ {product.price}</p>
-
-              <div className="flex items-center justify-between w-[20rem]">
-                <div className="one">
-                  <h1 className="flex items-center mb-6">
-                    <FaStore className="mr-2 text-white" /> Brand:{" "}
-                    {product.brand}
-                  </h1>
-                  <h1 className="flex items-center mb-6 w-[20rem]">
-                    <FaClock className="mr-2 text-white" /> Added:{" "}
-                    {moment(product.createAt).fromNow()}
-                  </h1>
-                  <h1 className="flex items-center mb-6">
-                    <FaStar className="mr-2 text-white" /> Reviews:{" "}
-                    {product.numReviews}
-                  </h1>
-                </div>
-
-                <div className="two">
-                  <h1 className="flex items-center mb-6">
-                    <FaStar className="mr-2 text-white" /> Ratings: {rating}
-                  </h1>
-                  <h1 className="flex items-center mb-6">
-                    <FaShoppingCart className="mr-2 text-white" /> Quantity:{" "}
-                    {product.quantity}
-                  </h1>
-                  <h1 className="flex items-center mb-6 w-[10rem]">
-                    <FaBox className="mr-2 text-white" /> In Stock:{" "}
-                    {product.countInStock}
-                  </h1>
+        {isLoading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">
+            {error?.data?.message || error.message}
+          </Message>
+        ) : (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+              {/* Product Image Section */}
+              <div className="relative bg-white rounded-lg overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-auto object-cover rounded-lg transition-transform duration-300 hover:scale-105"
+                />
+                <div className="absolute top-4 right-4">
+                  <HeartIcon product={product} />
                 </div>
               </div>
 
-              <div className="flex justify-between flex-wrap">
-                <Ratings
-                  value={product.rating}
-                  text={`${product.numReviews} reviews`}
-                />
+              {/* Product Details Section */}
+              <div className="flex flex-col space-y-6">
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    {product.name}
+                  </h1>
+                  <div className="flex items-center space-x-2">
+                    <Ratings value={product.rating} />
+                    <span className="text-gray-500">({product.numReviews} reviews)</span>
+                  </div>
+                </div>
 
-                {product.countInStock > 0 && (
-                  <div>
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <p className="text-gray-700 leading-relaxed">
+                    {product.description}
+                  </p>
+                </div>
+
+                <div className="text-4xl font-bold text-blue-600">
+                  ₹{product.price.toLocaleString('en-IN')}
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center text-gray-700">
+                      <FaStore className="w-5 h-5 mr-3 text-blue-500" />
+                      <span className="font-medium">Brand:</span>
+                      <span className="ml-2">{product.brand}</span>
+                    </div>
+                    <div className="flex items-center text-gray-700">
+                      <FaClock className="w-5 h-5 mr-3 text-blue-500" />
+                      <span className="font-medium">Added:</span>
+                      <span className="ml-2">{moment(product.createdAt).fromNow()}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center text-gray-700">
+                      <FaBox className="w-5 h-5 mr-3 text-blue-500" />
+                      <span className="font-medium">In Stock:</span>
+                      <span className="ml-2">{product.countInStock}</span>
+                    </div>
+                    <div className="flex items-center text-gray-700">
+                      <FaShoppingCart className="w-5 h-5 mr-3 text-blue-500" />
+                      <span className="font-medium">Sold:</span>
+                      <span className="ml-2">{product.quantity}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Add to Cart Section */}
+                <div className="flex items-center space-x-4 pt-6 mt-auto">
+                  {product.countInStock > 0 && (
                     <select
                       value={qty}
-                      onChange={(e) => setQty(e.target.value)}
-                      className="p-2 w-[6rem] rounded-lg text-black"
+                      onChange={(e) => setQty(Number(e.target.value))}
+                      className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-700"
                     >
                       {[...Array(product.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
@@ -151,37 +161,38 @@ const ProductDetails = () => {
                         </option>
                       ))}
                     </select>
-                  </div>
-                )}
-              </div>
+                  )}
 
-              <div className="btn-container">
-                <button
-                  onClick={addToCartHandler}
-                  disabled={product.countInStock === 0}
-                  className="bg-pink-600 text-white py-2 px-4 rounded-lg mt-4 md:mt-0"
-                >
-                  Add To Cart
-                </button>
+                  <button
+                    onClick={addToCartHandler}
+                    disabled={product.countInStock === 0}
+                    className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed font-medium"
+                  >
+                    {product.countInStock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div className="mt-[5rem] container flex flex-wrap items-start justify-between ml-[10rem]">
-              <ProductTabs
-                loadingProductReview={loadingProductReview}
-                userInfo={userInfo}
-                submitHandler={submitHandler}
-                rating={rating}
-                setRating={setRating}
-                comment={comment}
-                setComment={setComment}
-                product={product}
-              />
+            {/* Product Tabs Section */}
+            <div className="border-t border-gray-100 mt-8">
+              <div className="p-8">
+                <ProductTabs
+                  loadingProductReview={loadingProductReview}
+                  userInfo={userInfo}
+                  submitHandler={submitHandler}
+                  rating={rating}
+                  setRating={setRating}
+                  comment={comment}
+                  setComment={setComment}
+                  product={product}
+                />
+              </div>
             </div>
           </div>
-        </>
-      )}
-    </>
+        )}
+      </div>
+    </div>
   );
 };
 

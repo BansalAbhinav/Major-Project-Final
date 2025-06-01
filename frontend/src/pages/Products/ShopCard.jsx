@@ -17,72 +17,52 @@ const ShopCard = ({ p }) => {
   };
 
   return (
-    <div className="max-w-sm h-[25rem] relative bg-[#101010] rounded-lg shadow dark:bg-[#191818] dark:border-gray-700">
-      <section className="relative">
+    <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+      <div className="relative group">
         <Link to={`/product/${p._id}`}>
-          <span className="absolute bottom-3 right-3 bg-pink-100 text-pink-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-pink-900 dark:text-pink-300">
+          <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
+            <img
+              src={p.image}
+              alt={p.name}
+              className="w-full h-[300px] object-cover transform group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <div className="absolute top-2 right-2 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
             {p?.brand}
-          </span>
-          <img
-            className="cursor-pointer w-full"
-            src={p.image}
-            alt={p.name}
-            style={{ height: "240px", objectFit: "cover" }}
-          />
+          </div>
         </Link>
-        <HeartIcon product={p} />
-      </section>
+        <div className="absolute top-2 left-2">
+          <HeartIcon product={p} />
+        </div>
+      </div>
 
       <div className="p-5">
-        <div className="flex justify-between">
-          <h5 className="mb-2 text-xl text-white dark:text-white">{p?.name}</h5>
+        <Link to={`/product/${p._id}`}>
+          <h3 className="text-lg font-medium text-gray-800 hover:text-blue-600 transition-colors duration-200 line-clamp-1">
+            {p?.name}
+          </h3>
+        </Link>
 
-          <p className="font-semibold text-pink-500">
-            {p?.price?.toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-            })}
-          </p>
-        </div>
-
-        <p className="mb-3 font-normal text-[#CFCFCF]">
-          {p?.description?.substring(0, 60)} ...
+        <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+          {p?.description}
         </p>
 
-        <section className="flex justify-between items-center">
-          <Link
-            to={`/product/${p._id}`}
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#f45555] rounded-lg hover:bg-[#d64343] focus:ring-4 focus:outline-none focus:ring-pink-300 dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
-          >
-            Read More
-            <svg
-              className="w-3.5 h-3.5 ml-2"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </Link>
+        <div className="mt-4 flex items-center justify-between">
+          <span className="text-lg font-semibold text-blue-600">
+            ₹{p?.price?.toLocaleString()}
+          </span>
 
           <button
-            className="p-2 rounded-full hover:bg-gray-700 transition-colors"
             onClick={(e) => {
               e.preventDefault();
               addToCartHandler(p, 1);
             }}
-            aria-label="Add to cart"
+            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
-            <AiOutlineShoppingCart size={25} className="text-white" />
+            <AiOutlineShoppingCart size={20} />
+            <span>Add to Cart</span>
           </button>
-        </section>
+        </div>
       </div>
     </div>
   );

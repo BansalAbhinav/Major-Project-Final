@@ -3,13 +3,17 @@ import Product from "../models/productModel.js";
 
 // Utility Function
 function calcPrices(orderItems) {
+  // Calculate items price in INR
   const itemsPrice = orderItems.reduce(
     (acc, item) => acc + item.price * item.qty,
     0
   );
 
-  const shippingPrice = itemsPrice > 100 ? 0 : 10;
-  const taxRate = 0.15;
+  // Shipping price (free shipping over ₹1000)
+  const shippingPrice = itemsPrice > 1000 ? 0 : 100;
+  
+  // GST rate 18%
+  const taxRate = 0.18;
   const taxPrice = (itemsPrice * taxRate).toFixed(2);
 
   const totalPrice = (

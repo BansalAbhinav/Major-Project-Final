@@ -88,47 +88,49 @@ const PlaceOrder = () => {
         )}
 
         <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-5">Order Summary</h2>
-          <div className="flex justify-between flex-wrap p-8 bg-[#181818]">
-            <ul className="text-lg">
-              <li>
-                <span className="font-semibold mb-4">Items:</span> $
-                {cart.itemsPrice}
-              </li>
-              <li>
-                <span className="font-semibold mb-4">Shipping:</span> $
-                {cart.shippingPrice}
-              </li>
-              <li>
-                <span className="font-semibold mb-4">Tax:</span> $
-                {cart.taxPrice}
-              </li>
-              <li>
-                <span className="font-semibold mb-4">Total:</span> $
-                {cart.totalPrice}
-              </li>
-            </ul>
+          <h2 className="text-2xl font-semibold mb-5 text-gray-800">Order Summary</h2>
+          <div className="flex justify-between flex-wrap p-8 bg-white rounded-lg shadow-md">
+            <div className="space-y-4">
+              <div className="text-gray-700">
+                <span className="font-semibold">Items:</span>{" "}
+                <span className="text-blue-600">₹{cart.itemsPrice}</span>
+              </div>
+              <div className="text-gray-700">
+                <span className="font-semibold">Shipping:</span>{" "}
+                <span className="text-blue-600">₹{cart.shippingPrice}</span>
+              </div>
+              <div className="text-gray-700">
+                <span className="font-semibold">Tax:</span>{" "}
+                <span className="text-blue-600">₹{cart.taxPrice}</span>
+              </div>
+              <div className="text-gray-700">
+                <span className="font-semibold">Total:</span>{" "}
+                <span className="text-blue-600 text-lg">₹{cart.totalPrice}</span>
+              </div>
+            </div>
 
-            {error && <Message variant="danger">{error.data.message}</Message>}
+            {error && <Message variant="error">{error.data.message}</Message>}
 
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Shipping</h2>
-              <p>
+            <div className="mt-6 lg:mt-0">
+              <h2 className="text-xl font-semibold mb-4 text-gray-800">Shipping</h2>
+              <div className="text-gray-700">
                 <strong>Address:</strong> {cart.shippingAddress.address},{" "}
                 {cart.shippingAddress.city} {cart.shippingAddress.postalCode},{" "}
                 {cart.shippingAddress.country}
-              </p>
+              </div>
             </div>
 
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Payment Method</h2>
-              <strong>Method:</strong> {cart.paymentMethod}
+            <div className="mt-6 lg:mt-0">
+              <h2 className="text-xl font-semibold mb-4 text-gray-800">Payment Method</h2>
+              <div className="text-gray-700">
+                <strong>Method:</strong> {cart.paymentMethod}
+              </div>
             </div>
           </div>
 
           <button
             type="button"
-            className="bg-pink-500 text-white py-2 px-4 rounded-full text-lg w-full mt-4"
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg text-lg w-full mt-6 transition-colors duration-200"
             disabled={cart.cartItems === 0}
             onClick={placeOrderHandler}
           >

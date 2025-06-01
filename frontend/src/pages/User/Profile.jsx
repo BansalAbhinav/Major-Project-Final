@@ -8,7 +8,7 @@ import { setCredentials } from "../../redux/features/auth/authSlice";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
-  const [username, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -19,9 +19,11 @@ const Profile = () => {
     useProfileMutation();
 
   useEffect(() => {
-    setUserName(userInfo.username);
-    setEmail(userInfo.email);
-  }, [userInfo.email, userInfo.username]);
+    if (userInfo) {
+      setUsername(userInfo.username);
+      setEmail(userInfo.email);
+    }
+  }, [userInfo]);
 
   const dispatch = useDispatch();
 
@@ -46,71 +48,101 @@ const Profile = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 mt-[10rem]">
-      <div className="flex justify-center align-center md:flex md:space-x-4">
-        <div className="md:w-1/3">
-          <h2 className="text-2xl font-semibold mb-4">Update Profile</h2>
-          <form onSubmit={submitHandler}>
-            <div className="mb-4">
-              <label className="block text-white mb-2">Name</label>
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">User Profile</h2>
+
+          <form onSubmit={submitHandler} className="space-y-6">
+            <div>
+              <label 
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Username
+              </label>
               <input
                 type="text"
-                placeholder="Enter name"
-                className="form-input p-4 rounded-sm w-full"
+                id="username"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter username"
                 value={username}
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
 
-            <div className="mb-4">
-              <label className="block text-white mb-2">Email Address</label>
+            <div>
+              <label 
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email Address
+              </label>
               <input
                 type="email"
+                id="email"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter email"
-                className="form-input p-4 rounded-sm w-full"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
-            <div className="mb-4">
-              <label className="block text-white mb-2">Password</label>
+            <div>
+              <label 
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
               <input
                 type="password"
+                id="password"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter password"
-                className="form-input p-4 rounded-sm w-full"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
-            <div className="mb-4">
-              <label className="block text-white mb-2">Confirm Password</label>
+            <div>
+              <label 
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Confirm Password
+              </label>
               <input
                 type="password"
+                id="confirmPassword"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Confirm password"
-                className="form-input p-4 rounded-sm w-full"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
 
-            <div className="flex justify-between">
+            <div className="flex items-center justify-between pt-4">
               <button
                 type="submit"
-                className="bg-pink-500 text-white py-2 px-4 rounded hover:bg-pink-600"
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                Update
+                Update Profile
               </button>
 
               <Link
-                to="/user-orders"
-                className="bg-pink-600 text-white py-2 px-4 rounded hover:bg-pink-700"
+                to="/my-orders"
+                className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 My Orders
               </Link>
             </div>
-            {loadingUpdateProfile && <Loader />}
+
+            {loadingUpdateProfile && (
+              <div className="mt-4">
+                <Loader />
+              </div>
+            )}
           </form>
         </div>
       </div>

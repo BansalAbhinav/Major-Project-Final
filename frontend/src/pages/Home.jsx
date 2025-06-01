@@ -13,8 +13,8 @@ const Home = () => {
   return (
     <div className="ml-10">
       <div className="ml-8 h-[7rem] w-[60%]">
-        <input type="text" name="" id="" />
-        <FaSearch className="text-red-500" size={20} />
+        {/* <input type="text" name="" id="" />
+        <FaSearch className="text-red-500" size={20} /> */}
       </div>
       {!keyword && <Header />}
       {isLoading ? (

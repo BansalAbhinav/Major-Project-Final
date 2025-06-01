@@ -56,7 +56,7 @@ const Cart = () => {
 
                     <div className="mt-2 text-white">{item.brand}</div>
                     <div className="mt-2 text-white font-bold">
-                      $ {item.price}
+                      ₹ {item.price}
                     </div>
                   </div>
 
@@ -94,7 +94,7 @@ const Cart = () => {
                   </h2>
 
                   <div className="text-2xl font-bold">
-                    ${" "}
+                    ₹{" "}
                     {cartItems
                       .reduce((acc, item) => acc + item.qty * item.price, 0)
                       .toFixed(2)}

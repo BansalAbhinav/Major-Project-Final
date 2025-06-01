@@ -47,18 +47,18 @@ const Navigation = () => {
       }}
       className={`${
         isSidebarExpanded ? "w-[15%]" : "w-[4%]"
-      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between p-4 text-white bg-[#000] h-[100vh] fixed transition-all duration-300`}
+      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between p-4 text-gray-700 bg-white border-r border-gray-200 h-[100vh] fixed transition-all duration-300 shadow-lg`}
       id="navigation-container"
     >
       {/* Top Navigation Links */}
       <div className="flex flex-col justify-center space-y-4">
         <Link
           to="/"
-          className="flex items-center transition-transform transform hover:translate-x-2 hover:text-red-400 "
+          className="flex items-center transition-transform transform hover:translate-x-2 hover:text-blue-600"
         >
           <AiOutlineHome className="mr-2 mt-[3rem]" size={26} />
           {isSidebarExpanded && (
-            <span className="nav-item-name mt-[3rem] text-xs font-medium">
+            <span className="nav-item-name mt-[3rem] text-sm font-medium">
               HOME
             </span>
           )}
@@ -66,11 +66,11 @@ const Navigation = () => {
 
         <Link
           to="/shop"
-          className="flex items-center transition-transform transform hover:translate-x-2 hover:text-red-400"
+          className="flex items-center transition-transform transform hover:translate-x-2 hover:text-blue-600"
         >
           <AiOutlineShopping className="mr-2 mt-[1.85rem]" size={26} />
           {isSidebarExpanded && (
-            <span className="nav-item-name mt-[1.85rem] text-xs font-medium">
+            <span className="nav-item-name mt-[1.85rem] text-sm font-medium">
               SHOP
             </span>
           )}
@@ -78,11 +78,11 @@ const Navigation = () => {
 
         <Link
           to="/cart"
-          className="flex items-center transition-transform transform hover:translate-x-2 hover:text-red-400"
+          className="flex items-center transition-transform transform hover:translate-x-2 hover:text-blue-600"
         >
           <AiOutlineShoppingCart className="mr-2 mt-[1.85rem]" size={26} />
           {isSidebarExpanded && (
-            <span className="nav-item-name mt-[1.85rem] text-xs font-medium">
+            <span className="nav-item-name mt-[1.85rem] text-sm font-medium">
               CART
             </span>
           )}
@@ -90,11 +90,11 @@ const Navigation = () => {
 
         <Link
           to="/favorite"
-          className="flex items-center transition-transform transform hover:translate-x-2 hover:text-red-400"
+          className="flex items-center transition-transform transform hover:translate-x-2 hover:text-blue-600"
         >
           <FaHeart className="mr-2 mt-[1.85rem]" size={22} />
           {isSidebarExpanded && (
-            <span className="nav-item-name mt-[1.85rem] text-xs font-medium">
+            <span className="nav-item-name mt-[1.85rem] text-sm font-medium">
               FAVORITE
             </span>
           )}
@@ -105,11 +105,11 @@ const Navigation = () => {
         {userInfo ? (
           <button
             onClick={toggleDropdown}
-            className="flex items-center text-white focus:outline-none mb-1"
+            className="flex items-center text-gray-700 focus:outline-none mb-1"
           >
             {isSidebarExpanded ? (
               <>
-                <span className="text-white">{userInfo.username}</span>
+                <span className="text-gray-700">{userInfo.username}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className={`h-4 w-4 ml-1 transition-transform ${
@@ -117,7 +117,7 @@ const Navigation = () => {
                   }`}
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="white"
+                  stroke="gray"
                 >
                   <path
                     strokeLinecap="round"

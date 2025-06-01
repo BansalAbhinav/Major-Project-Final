@@ -23,8 +23,7 @@ const Order = () => {
   } = useGetOrderDetailsQuery(orderId);
 
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
-  const [deliverOrder, { isLoading: loadingDeliver }] =
-    useDeliverOrderMutation();
+  const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
@@ -42,7 +41,7 @@ const Order = () => {
           type: "resetOptions",
           value: {
             "client-id": paypal.clientId,
-            currency: "USD",
+            currency: "INR",
           },
         });
         paypalDispatch({ type: "setLoadingStatus", value: "pending" });
@@ -79,7 +78,7 @@ const Order = () => {
         {
           amount: {
             value: order.totalPrice,
-            currency_code: "USD",
+            currency_code: "INR",
           },
         },
       ],
@@ -100,136 +99,165 @@ const Order = () => {
   ) : error ? (
     <Messsage variant="danger">{error.data.message}</Messsage>
   ) : (
-    <div className="container flex flex-col ml-[10rem] md:flex-row">
-      <div className="md:w-2/3 pr-4">
-        <div className="border gray-300 mt-5 pb-4 mb-5">
-          {order.orderItems.length === 0 ? (
-            <Messsage>Order is empty</Messsage>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-[80%]">
-                <thead className="border-b-2">
-                  <tr>
-                    <th className="p-2">Image</th>
-                    <th className="p-2">Product</th>
-                    <th className="p-2 text-center">Quantity</th>
-                    <th className="p-2">Unit Price</th>
-                    <th className="p-2">Total</th>
-                  </tr>
-                </thead>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="lg:w-2/3">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+              <div className="p-6 border-b border-gray-100">
+                <h2 className="text-2xl font-bold text-gray-900">Order Items</h2>
+              </div>
 
-                <tbody>
-                  {order.orderItems.map((item, index) => (
-                    <tr key={index}>
-                      <td className="p-2">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-16 h-16 object-cover"
-                        />
-                      </td>
+              {order.orderItems.length === 0 ? (
+                <div className="p-6">
+                  <Messsage>Order is empty</Messsage>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-100">
+                      <tr>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Image</th>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Product</th>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Quantity</th>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Price</th>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Total</th>
+                      </tr>
+                    </thead>
 
-                      <td className="p-2">
-                        <Link to={`/product/${item.product}`}>{item.name}</Link>
-                      </td>
-
-                      <td className="p-2 text-center">{item.qty}</td>
-                      <td className="p-2 text-center">{item.price}</td>
-                      <td className="p-2 text-center">
-                        $ {(item.qty * item.price).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                    <tbody className="divide-y divide-gray-100">
+                      {order.orderItems.map((item, index) => (
+                        <tr key={index} className="hover:bg-gray-50">
+                          <td className="px-6 py-4">
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-20 h-20 object-cover rounded-lg"
+                            />
+                          </td>
+                          <td className="px-6 py-4">
+                            <Link 
+                              to={`/product/${item.product}`}
+                              className="text-blue-600 hover:text-blue-700"
+                            >
+                              {item.name}
+                            </Link>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-600">{item.qty}</td>
+                          <td className="px-6 py-4 text-sm text-gray-600">₹{item.price}</td>
+                          <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                            ₹{(item.qty * item.price).toFixed(2)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </div>
+          </div>
 
-      <div className="md:w-1/3">
-        <div className="mt-5 border-gray-300 pb-4 mb-4">
-          <h2 className="text-xl font-bold mb-2">Shipping</h2>
-          <p className="mb-4 mt-4">
-            <strong className="text-pink-500">Order:</strong> {order._id}
-          </p>
+          <div className="lg:w-1/3 space-y-6">
+            {/* Order Summary Card */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-100">
+              <div className="p-6 border-b border-gray-100">
+                <h2 className="text-xl font-bold text-gray-900">Order Summary</h2>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Items</span>
+                  <span className="text-gray-900 font-medium">₹{order.itemsPrice}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Shipping</span>
+                  <span className="text-gray-900 font-medium">₹{order.shippingPrice}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Tax</span>
+                  <span className="text-gray-900 font-medium">₹{order.taxPrice}</span>
+                </div>
+                <div className="pt-4 border-t border-gray-100">
+                  <div className="flex justify-between">
+                    <span className="text-base font-medium text-gray-900">Total</span>
+                    <span className="text-base font-bold text-blue-600">₹{order.totalPrice}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          <p className="mb-4">
-            <strong className="text-pink-500">Name:</strong>{" "}
-            {order.user.username}
-          </p>
+            {/* Shipping Info Card */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-100">
+              <div className="p-6 border-b border-gray-100">
+                <h2 className="text-xl font-bold text-gray-900">Shipping</h2>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium text-gray-900">Name:</span>{" "}
+                    {order.user.username}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium text-gray-900">Email:</span>{" "}
+                    {order.user.email}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium text-gray-900">Address:</span>{" "}
+                    {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
+                    {order.shippingAddress.postalCode}, {order.shippingAddress.country}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium text-gray-900">Method:</span>{" "}
+                    {order.paymentMethod}
+                  </p>
+                </div>
 
-          <p className="mb-4">
-            <strong className="text-pink-500">Email:</strong> {order.user.email}
-          </p>
+                <div className="pt-4">
+                  {order.isPaid ? (
+                    <div className="bg-green-50 text-green-800 rounded-lg p-4">
+                      Paid on {new Date(order.paidAt).toLocaleDateString()}
+                    </div>
+                  ) : (
+                    <div className="bg-red-50 text-red-800 rounded-lg p-4">
+                      Not paid
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
-          <p className="mb-4">
-            <strong className="text-pink-500">Address:</strong>{" "}
-            {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
-            {order.shippingAddress.postalCode}, {order.shippingAddress.country}
-          </p>
-
-          <p className="mb-4">
-            <strong className="text-pink-500">Method:</strong>{" "}
-            {order.paymentMethod}
-          </p>
-
-          {order.isPaid ? (
-            <Messsage variant="success">Paid on {order.paidAt}</Messsage>
-          ) : (
-            <Messsage variant="danger">Not paid</Messsage>
-          )}
-        </div>
-
-        <h2 className="text-xl font-bold mb-2 mt-[3rem]">Order Summary</h2>
-        <div className="flex justify-between mb-2">
-          <span>Items</span>
-          <span>$ {order.itemsPrice}</span>
-        </div>
-        <div className="flex justify-between mb-2">
-          <span>Shipping</span>
-          <span>$ {order.shippingPrice}</span>
-        </div>
-        <div className="flex justify-between mb-2">
-          <span>Tax</span>
-          <span>$ {order.taxPrice}</span>
-        </div>
-        <div className="flex justify-between mb-2">
-          <span>Total</span>
-          <span>$ {order.totalPrice}</span>
-        </div>
-
-        {!order.isPaid && (
-          <div>
-            {loadingPay && <Loader />}{" "}
-            {isPending ? (
-              <Loader />
-            ) : (
-              <div>
-                <div>
-                  <PayPalButtons
-                    createOrder={createOrder}
-                    onApprove={onApprove}
-                    onError={onError}
-                  ></PayPalButtons>
+            {/* Payment Section */}
+            {!order.isPaid && (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-100">
+                <div className="p-6">
+                  {loadingPay && <Loader />}
+                  {isPending ? (
+                    <Loader />
+                  ) : (
+                    <div>
+                      <PayPalButtons
+                        createOrder={createOrder}
+                        onApprove={onApprove}
+                        onError={onError}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-          </div>
-        )}
 
-        {loadingDeliver && <Loader />}
-        {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-          <div>
-            <button
-              type="button"
-              className="bg-pink-500 text-white w-full py-2"
-              onClick={deliverHandler}
-            >
-              Mark As Delivered
-            </button>
+            {/* Admin Deliver Button */}
+            {loadingDeliver && <Loader />}
+            {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+              <button
+                type="button"
+                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                onClick={deliverHandler}
+              >
+                Mark As Delivered
+              </button>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
