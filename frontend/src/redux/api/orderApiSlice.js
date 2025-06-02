@@ -62,6 +62,37 @@ export const orderApiSlice = apiSlice.injectEndpoints({
     getTotalSalesByDate: builder.query({
       query: () => `${ORDERS_URL}/total-sales-by-date`,
     }),
+
+    getCategoryDistribution: builder.query({
+      query: () => `/api/orders/category-distribution`,
+      transformResponse: (response) => {
+        return {
+          labels: response.categories.map(cat => cat.name),
+          data: response.categories.map(cat => cat.count)
+        };
+      }
+    }),
+
+    getTopProducts: builder.query({
+      query: () => `/api/orders/top-products`,
+      transformResponse: (response) => {
+        return {
+          names: response.products.map(p => p.name),
+          sales: response.products.map(p => p.totalSales)
+        };
+      }
+    }),
+
+    getMonthlyOrders: builder.query({
+      query: () => `/api/orders/monthly-trend`,
+      transformResponse: (response) => {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return {
+          months: months,
+          data: response.monthlyData
+        };
+      }
+    })
   }),
 });
 
@@ -76,4 +107,7 @@ export const {
   useGetMyOrdersQuery,
   useDeliverOrderMutation,
   useGetOrdersQuery,
+  useGetCategoryDistributionQuery,
+  useGetTopProductsQuery,
+  useGetMonthlyOrdersQuery,
 } = orderApiSlice;
